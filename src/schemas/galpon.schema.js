@@ -10,6 +10,6 @@ id:id.required()
 });
 
 const updateGalponSchema = joi.object({
-  nombre
+  nombre 
 })
 module.exports={createGalponProduccion,getGalponSchema,updateGalponSchema};
