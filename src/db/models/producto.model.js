@@ -2,7 +2,8 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const   PRODUCTO_TABLE = 'productos';
  const {CATEGORY_TABLE}=require('./category.model');
-const ProductoSchema = {
+
+ const ProductoSchema = {
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -16,11 +17,8 @@ const ProductoSchema = {
   },
   cnt: {
     allowNull: false,
-    type: DataTypes.INTEGER
-  },
-  precio:{
-    allowNull: false,
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
+    defaultValue: 0
   },
   categoryId: {
     field: 'category_id',

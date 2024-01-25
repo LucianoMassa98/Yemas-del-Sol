@@ -11,36 +11,28 @@ const CustomerSchema =  {
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  name: {
+  nombre: {
     allowNull: false,
     type: DataTypes.STRING,
   },
-  lastName: {
+  apellido: {
     allowNull: false,
-    type: DataTypes.STRING,
-    field: 'last_name',
+    type: DataTypes.STRING
   },
-  phone: {
+  celular: {
     allowNull: true,
     type: DataTypes.STRING,
+  },
+  email: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    unique: true,
   },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
     field: 'created_at',
     defaultValue: Sequelize.NOW,
-  },
-  userId: {
-    field: 'user_id',
-    allowNull: false,
-    type: DataTypes.INTEGER,
-    unique: true,
-    references: {
-      model: USER_TABLE,
-      key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
   }
 }
 
@@ -48,9 +40,7 @@ class Customer extends Model {
 
   static associate(models) {
     this.belongsTo(models.User, {as: 'user'});
-    this.hasMany(models.Notapedido,{as: 'notapedidos', foreignKey: 'customerId'});
-    this.hasMany(models.RemitoCompra,{as: 'RemitosCompra', foreignKey: 'customerId'});
-  }
+   }
 
   static config(sequelize) {
     return {

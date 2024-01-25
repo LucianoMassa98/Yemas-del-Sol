@@ -9,7 +9,7 @@ const CategorySchema = {
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  name: {
+  nombre: {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false,

@@ -2,51 +2,45 @@ const express = require('express');
 const router = express.Router();
 const RemitosCompraService =require('../services/remitosCompras.service');
 const validatorHandler = require('../middlewares/validator.handler');
-const {createRemito,getRemito,filtrarFechaRemito,addItemSchema} = require('../schemas/remito.schema');
+
+const {createRemito,getRemito,
+  addItemSchema,subItemSchema,queryRemitoSchema} = require('../schemas/remitoCompra.schema');
 
 const servicio = new RemitosCompraService();
 
-//cliente solicita lista de formularios: RMT
-router.get('/',async(req,res,next)=>{
+router.get('/',
+validatorHandler(queryRemitoSchema,'query'),
+async(req,res,next)=>{
   try{
-    const remitoscompras = await servicio.Buscar();
+    const remitoscompras = await servicio.find();
   res.json(remitoscompras);
   }catch(error){next(error);}
 
 });
-// filtrar formularios: RMT por fecha
-router.get('/BuscarporFecha',
-//validatorHandler(filtrarFechaRemito,'body'),
-async (req,res,next)=>{
-  try{
 
-  const remitoscompras = await servicio.BuscarporFecha(req.query);
-  res.json(remitoscompras);
-  //devolver lista de notas de pedidos filtradas por fecha
-}catch(error){next(error);}
-  });
-//cliente solicita formulario: RMT por id
+
 router.get('/:id',
 validatorHandler(getRemito,'params'),
 async(req,res,next)=>{
   try{
     const { id } = req.params;
-  const rmtC = await servicio.BuscarporID(id);
+  const rmtC = await servicio.findOne(id);
   res.json(rmtC);
   }catch(error){next(error);}
 });
-//cliente agrega formulario: RMT
+
 router.post('/',
 validatorHandler(createRemito,'body'),
 async (req,res,next)=>{
   try{
   const body = req.body;
-  const rmtC = await servicio.Crear(body);
+  const rmtC = await servicio.create(body);
   res.json(rmtC);
   }catch(error){next(error);}
 
 });
-router.post('/Agregar',
+
+router.post('/addItem',
 validatorHandler(addItemSchema,'body'),
 async (req,res,next)=>{
   try{
@@ -56,27 +50,30 @@ async (req,res,next)=>{
   }catch(error){next(error);}
 
 });
+
 router.delete('/:id',
   validatorHandler(getRemito,'params'),
 async(req,res,next)=>{
   try{
   const {id} = req.params;
-  const band = await servicio.Borrar(id);
+  const band = await servicio.delete(id);
   res.json(band);
 }catch(error){
   next(error);
 }
 });
-router.post('/Finalizar',
-  async (req, res, next) => {
-    try {
-      const body = req.body;
-      const newItem = await servicio.Finalizar(body);
-      res.status(201).json(newItem);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+
+router.delete('/subItem/:compraId/:productoId',
+  validatorHandler(subItemSchema,'params'),
+async(req,res,next)=>{
+  try{
+  const {compraId,productoId} = req.params;
+  const band = await servicio.subItem(compraId,productoId);
+  res.json(band);
+}catch(error){
+  next(error);
+}
+});
+
 
 module.exports = router;

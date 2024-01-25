@@ -1,21 +1,20 @@
 
 const boom = require('@hapi/boom');
-//const pool = require('../libs/postgres.pool');
 const {models} =require('../libs/sequelize');
 
 class ProductoServicio{
 
-  constructor(){
 
-  }
 
-  //create
- async Crear(producto){
+ async create(producto){
    const newproduct = await models.producto.create(producto);
+   if(!newproduct){
+    throw boom.notFound('No se pudo crear el producto');
+  }
     return newproduct;
   }
   //findOne
-  async BuscarporID(id){
+  async findOne(id){
 
     const producto =  await models.producto.findByPk(id);
     if(!producto){
@@ -24,47 +23,33 @@ class ProductoServicio{
       return producto;
 
   }
-  //find
-  async Buscar(){
-    /*
-    conectarse con un pool
-    const query = 'SELECT * FROM tasks';
-    const rta = await this.pool.query(query);
-    return rta.rows;*/
 
-    // consulta utilizando orm sequelize
-    const rta = await models.producto.findAll({
-      include: ['category']
-    });
+  async find(query){
+ 
+    const rta = await models.producto.findAll();
+    if(!rta){
+      throw boom.notFound('productos no existentes');
+    }
     return rta;
   }
-  //update
-  async Actualizar(id,changes){
+  async update(id,changes){
 
-    const producto =  await this.BuscarporID(id);
+    const producto =  await this.findOne(id);
     const rta = await producto.update(changes);
+    if(!rta){
+      throw boom.notFound('No se pudo actualizar el producto');
+    }
       return rta;
   }
-  //delete
-  async Borrar(id){
-    const producto = await this.BuscarporID(id);
-    await producto.destroy();
-    return id;
+  async delete(id){
+    const producto = await this.findOne(id);
+   const rta= await producto.destroy();
+    if(!rta){
+      throw boom.notFound('No se pudo eliminar el producto');
+    }
+    return producto;
   }
- // sumar a la cantidad de los productos
-   async Sumar(id,data){
-    const producto = await this.BuscarporID(id);
-    const changes={cnt:producto.cnt + data.cnt };
-    await this.Actualizar(id,changes);
-    return {rta: true};
 
-  }
-  async Restar(id, data){
-    const producto = await this.BuscarporID(id);
-    const changes={cnt:producto.cnt - data.cnt };
-    await this.Actualizar(id,changes);
-    return {rta: true};
-  }
 
 
 }

@@ -2,7 +2,7 @@ const express = require('express');
 
 const GalponService = require('../services/galpon.service');
 const validationHandler = require('../middlewares/validator.handler');
-const {  createGalponProduccion,getGalponSchema} = require('../schemas/galpon.schema');
+const {  createGalponProduccion,getGalponSchema,updateGalponSchema} = require('../schemas/galpon.schema');
 
 const router = express.Router();
 const service = new GalponService();
@@ -28,14 +28,14 @@ router.post('/',
   async (req, res, next) => {
     try {
       const body = req.body;
-      res.status(201).json(await service.create(body));
+      res.json(await service.create(body));
     } catch (error) {
       next(error);
     }
   }
 );
 router.patch('/:id',
-//validatorHandler(updateProductoSchema,'body'),
+validationHandler(updateGalponSchema,'body'),
   async(req,res,next)=>{
   try{
   const {id} = req.params;
@@ -51,7 +51,7 @@ router.delete('/:id',
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      res.status(200).json(await service.delete(id));
+      res.json(await service.delete(id));
     } catch (error) {
       next(error);
     }

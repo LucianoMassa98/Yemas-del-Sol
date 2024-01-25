@@ -3,8 +3,11 @@ const joi = require('joi');
 const galponId =joi.number();
 const id = joi.number();
 const cnt = joi.number();
-const produccionId= joi.number();
-const productoId= joi.number();
+const produccionId= joi.number().integer();
+const productoId= joi.number().integer();
+const fechaDesde= joi.date();
+const fechaHasta= joi.date();
+
 const createRemitoProduccion = joi.object({
   galponId: galponId.required()
 });
@@ -17,17 +20,16 @@ const addItemSchema = joi.object({
   productoId: productoId.required(),
 
 });
-const addItemProducidoSchema = joi.object({
-  cnt: cnt.required(),
-  producidoId: produccionId.required(),
+const subItemSchema = joi.object({
+  produccionId: produccionId.required(),
   productoId: productoId.required(),
 
 });
-const addItemEnvioSchema = joi.object({
-  cnt: cnt.required(),
-  envioId: produccionId.required(),
-  productoId: productoId.required(),
-
+const queryRemitoSchema = joi.object({
+  galponId,
+  fechaDesde,
+  fechaHasta
 });
+
 module.exports={createRemitoProduccion,getRemitoProduccion,
-  addItemSchema,addItemProducidoSchema,addItemEnvioSchema};
+  addItemSchema,queryRemitoSchema,subItemSchema};

@@ -8,11 +8,14 @@ class CategoryService {
   }
   async create(data) {
     const newCategory = await models.Category.create(data);
+    if(!newCategory){ throw boom.notFound("No se pudo crear la categoria");}
     return newCategory;
   }
 
   async find() {
     const categories = await models.Category.findAll();
+    if(!categories){ throw boom.notFound("No se pudo crear la categoria");}
+
     return categories;
   }
 
@@ -25,14 +28,17 @@ class CategoryService {
   }
 
   async update(id, changes) {
-    return {
-      id,
-      changes,
-    };
+    const categoria = await this.findOne(id);
+    const rta = await categoria.update(changes);
+    if(!rta){ throw boom.notFound('No se pudo actualizar la categoria');}
+    return rta;
   }
 
   async delete(id) {
-    return { id };
+    const categoria = await this.findOne(id);
+    const rta = await categoria.destroy();
+    if(!rta){ throw boom.notFound('No se pudo eliminar la categoria');}
+    return categoria;
   }
 
 }

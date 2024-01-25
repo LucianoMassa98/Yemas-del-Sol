@@ -6,35 +6,43 @@ const {models} = require('../libs/sequelize');
 const {Op} = require('sequelize');
 class RemitosProduccionService{
 
-  constructor(){
-    this.servicio = new ProductoService();
-    this.servicioGalpon = new GalponService();
-
-  }
-
-  // create
-   async Crear(data){
+   async create(data){
     const newremito = await models.RemitoProduccion.create(data);
     return newremito;
     }
     async additem(data){
       const newitem = await models.ProduccionProducto.create(data);
+      if(!newitem){throw boom.notFound("No se pudo eliminar el producto de la produccion");}
+
       return newitem;
     }
-  // actualiza remito de produccion
-  async Actualizar(id,changes){
-    const model = await this.BuscarporID(id);
+    async subitem(compraId, productoId){
+
+      const item = await models.CompraProducto.findOne(
+        {where:{compraId: compraId, productoId: productoId}});
+      if(!item){throw boom.notFound("No se pudo eliminar el producto de la produccion");}
+  
+      const rta = await item.destroy();
+      if(!rta){throw boom.notFound("No se pudo eliminar el producto de la produccion");}
+  
+      return item;
+    }
+
+    async update(id,changes){
+    const model = await this.findOne(id);
     const rta = await model.update(changes);
+    if(!rta){ throw boom.notFound("No se pudo actualizar la produccion");}
     return rta;
     }
-  //borra ntps por medio del id
-  async Borrar(id){
-    const model = await this.BuscarporID(id);
-     await model.destroy();
-    return { rta: true};
+
+    async delete(id){
+    const model = await this.findOne(id);
+    const rta= await model.destroy();
+    if(!rta){throw boom.notFound("No se pudo eliminar el la produccion");}
+    return model;
   }
 
-  async BuscarporID(id){
+  async findOne(id){
     const remito = await models.RemitoProduccion.findByPk(id,{
       include: [{association: 'galpon'},'items']
     });
@@ -46,36 +54,13 @@ class RemitosProduccionService{
     return remito;
 
   }
-  async BuscarporFecha(query){
 
-    const {fechamin ,fechamax} = query;
-    console.log(fechamin);
-    const ntp = await models.RemitoProduccion.findAll(
-    {
-      where: {
-        created_at: {
-          [Op.gte]: fechamin,
-          [Op.lte]: fechamax
-        }
-      },
-      include: [
-        {association: 'galpon'}
-      ]
-
-    }
-
-
-    );
-    if(!ntp){ throw boom.notFound('No hay pedidos');}
-    return ntp;
-
-  }
-  async Buscar(){
+  async find(query){
 
     const remitos = await models.RemitoProduccion.findAll();
     return remitos;
   }
-  // resta cnt de la tabla Prodcutos
+
   async RestarProducto(id, data){
     const rta = await this.servicio.Restar(id, data);
     return rta;
@@ -83,33 +68,6 @@ class RemitosProduccionService{
 async SumarProducto(id, data){
   const rta = await this.servicio.Sumar(id, data);
   return rta;
-}
-async Finalizar(data){
-
-
-  const produccion = await this.Crear(data.produccion);
-  if(!produccion){ throw boom.notFound('No se creo produccion de pedido');}
-
-  const items= data.items;
-  if(!items){ throw boom.notFound('No hay lista de productos');}
-let sum = 0;
-  const recorreArray =  arr => arr.forEach(item => {
-    const producto = {
-      ...item,
-      produccionId: produccion.id
-    }
-    const rta =  this.additem(producto);
-     if(!rta){ throw boom.notFound('producto no agregado');}
-     const rta2 = this.RestarProducto(producto.productoId, {cnt: producto.cnt});
-
-     if(producto.productoId  === 3){}else{sum = sum + producto.cnt;}
-
-      console.log(sum);
-     });
-   await recorreArray(items);
-   this.servicioGalpon.Sumar(produccion.galponId,{enProduccion: sum});
-
-  return {rta: true};
 }
 
 }

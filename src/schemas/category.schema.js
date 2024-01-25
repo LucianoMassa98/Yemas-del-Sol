@@ -1,14 +1,14 @@
 const Joi = require('joi');
 
 const id = Joi.number().integer();
-const name = Joi.string().min(3).max(15);
+const nombre = Joi.string().min(3).max(15);
 
 const createCategorySchema = Joi.object({
-  name: name.required()
+  nombre: nombre.required()
 });
 
 const updateCategorySchema = Joi.object({
-  name: name,
+  nombre: nombre,
 });
 
 const getCategorySchema = Joi.object({

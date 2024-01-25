@@ -16,10 +16,6 @@ const CompraProductoSchema =  {
     allowNull: false,
     type: DataTypes.INTEGER
   },
-  precio:{
-    allowNull: false,
-    type: DataTypes.INTEGER
-  },
   compraId: {
     field: 'compra_id',
     allowNull: false,

@@ -2,7 +2,7 @@ const express = require('express');
 
 const UserService = require('./../services/user.service');
 const validatorHandler = require('./../middlewares/validator.handler');
-const { updateUserSchema, createUserSchema, getUserSchema } = require('../schemas/user.schema');
+const { loginUserSchema, updateUserSchema, createUserSchema, getUserSchema } = require('../schemas/user.schema');
 
 const router = express.Router();
 const service = new UserService();
@@ -35,7 +35,19 @@ router.post('/',
     try {
       const body = req.body;
       const newCategory = await service.create(body);
-      res.status(201).json(newCategory);
+      res.json(newCategory);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+router.post('/login',
+  validatorHandler(loginUserSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const {userName, password} = req.body;
+      const user = await service.login(userName, password);
+      res.json(user);
     } catch (error) {
       next(error);
     }

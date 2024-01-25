@@ -27,10 +27,7 @@ const GalponSchema = {
 class Galpon extends Model {
 
   static associate(models) {
-    this.hasMany(models.RemitoProduccion,{as: 'RemitosProduccion', foreignKey: 'galponId'});
-    this.hasMany(models.RemitoProducido,{as: 'RemitosProducidos', foreignKey: 'galponId'});
-    this.hasMany(models.RemitoEnvio,{as: 'RemitosEnvios', foreignKey: 'galponId'});
-
+   // this.hasMany(models.RemitoProduccion,{as: 'RemitosProduccion', foreignKey: 'galponId'});
   }
 
   static config(sequelize) {

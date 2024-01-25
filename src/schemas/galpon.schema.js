@@ -9,4 +9,7 @@ const getGalponSchema = joi.object({
 id:id.required()
 });
 
-module.exports={createGalponProduccion,getGalponSchema};
+const updateGalponSchema = joi.object({
+  nombre
+})
+module.exports={createGalponProduccion,getGalponSchema,updateGalponSchema};
