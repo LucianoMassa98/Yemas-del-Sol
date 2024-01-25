@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const  Sequelize  = require('sequelize');
 
 const { config } = require('./../config/config');
 const setupModels = require('./../db/models');
@@ -10,13 +10,14 @@ const options = {
 if (config.isProd) {
   options.dialectOptions = {
     ssl: {
+      require: true,
       rejectUnauthorized: false
     }
   }
 }
-console.log(config.dbUrl.toString());
-const sequelize = new Sequelize(config.dbUrl,options);
+console.log('Modo Produccion: '+config.isProd);
+const date = new Sequelize(config.dbUrl,options);
 
-setupModels(sequelize);
+setupModels(date);
 
-module.exports = sequelize;
+module.exports = date;
