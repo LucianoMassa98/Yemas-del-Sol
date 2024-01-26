@@ -8,7 +8,7 @@ class RemitosCompraService{
   async create(data){
     const compra = await models.RemitoCompra.create(data);
     if(!compra){throw boom.notFound("No se pudo crear la compra");}
-    return data;
+    return compra;
   }
   async additem(data){
     const newitem = await models.CompraProducto.create(data);

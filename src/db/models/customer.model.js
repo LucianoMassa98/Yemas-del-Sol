@@ -1,5 +1,4 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
-//relacion 1:1 donde customer carga con la relacion
 const { USER_TABLE } = require('./user.model')
 
 const CUSTOMER_TABLE = 'customers';

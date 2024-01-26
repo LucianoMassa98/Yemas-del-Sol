@@ -25,7 +25,7 @@ const ProduccionProductoSchema =  {
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    onDelete: 'CASCADE'
   },
   productoId: {
     field: 'product_id',
@@ -36,7 +36,7 @@ const ProduccionProductoSchema =  {
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    onDelete: 'CASCADE'
   }
 }
 

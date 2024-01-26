@@ -48,7 +48,7 @@ validatorHandler(createProductoSchema,'body'),
 
   });
 
-router.put('/:id',
+router.patch('/:id',
 validatorHandler(updateProductoSchema,'body'),
   async(req,res,next)=>{
   try{
@@ -61,7 +61,7 @@ validatorHandler(updateProductoSchema,'body'),
   }
 });
 
-router.delete('/Borrar/:id',
+router.delete('/:id',
   validatorHandler(getProductoSchema,'params'),
 async(req,res,next)=>{
   try{

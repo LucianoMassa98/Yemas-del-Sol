@@ -1,6 +1,7 @@
-const { database } = require('pg/lib/defaults');
 const { Model, DataTypes, Sequelize } = require('sequelize');
-const {CUSTOMER_TABLE}=require('./customer.model');
+const {GALPON_TABLE}=require('./galpon.model');
+const {USER_TABLE}=require('./user.model');
+
 const REMITOCOMPRA_TABLE = 'RemitosDeCompras';
 
 const RemitoCompraSchema = {
@@ -16,39 +17,36 @@ const RemitoCompraSchema = {
     field: 'created_at',
     defaultValue: Sequelize.NOW,
   },
-  customerId: {
-    field: 'customer_id',
+  galponId: {
+    field: 'galpon_id',
     allowNull: false,
     type: DataTypes.INTEGER,
     references: {
-      model: CUSTOMER_TABLE,
+      model: GALPON_TABLE,
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    onDelete: 'CASCADE'
   },
-  numero:{
+  userId: {
+    field: 'user_id',
     allowNull: false,
-    type: DataTypes.INTEGER
-  },
-  notaid:{
-    allowNull: false,
-    type: DataTypes.INTEGER
-  },
-  modificacion:{
-    allowNull: false,
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
+    type: DataTypes.INTEGER,
+    references: {
+      model: USER_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE'
   }
-
-
 }
 
 
 class RemitoCompra extends Model {
 
   static associate(models) {
-    this.belongsTo(models.Customer, { as: 'customer', });
+    this.belongsTo(models.Galpon, { as: 'galpon', });
+    this.belongsTo(models.User, { as: 'user', });
     this.belongsToMany(models.producto, {
       as: 'items',
       through: models.CompraProducto,

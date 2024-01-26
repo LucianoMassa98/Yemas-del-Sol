@@ -1,5 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { GALPON_TABLE}=require('./galpon.model');
+const { USER_TABLE}=require('./user.model');
+
 const   REMITOPRODUCCION_TABLE = 'remitosdeproduccion';
 
 const RemitoProduccionSchema = {
@@ -24,7 +26,18 @@ const RemitoProduccionSchema = {
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    onDelete: 'CASCADE'
+  },
+  userId: {
+    field: 'user_id',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: USER_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE'
   }
 
 }
@@ -32,6 +45,8 @@ const RemitoProduccionSchema = {
 class RemitoProduccion extends Model {
   static associate(models) {
     this.belongsTo(models.Galpon, { as: 'galpon', });
+    this.belongsTo(models.User, { as: 'user', });
+
     this.belongsToMany(models.producto, {
       as: 'items',
       through: models.ProduccionProducto,
