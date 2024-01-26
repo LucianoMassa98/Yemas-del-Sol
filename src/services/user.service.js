@@ -37,13 +37,16 @@ class UserService {
 
     const user = await this.findOne(id);
     const rta = await user.update(changes);
+    if(!rta){throw boom.notFound("No se pudo actualizar el usuario");}
+
     return rta;
   }
 
   async delete(id) {
     const user = await this.findOne(id);
-    await user.destroy();
-    return {id};
+    const rta = await user.destroy();
+    if(!rta){throw boom.notFound("No se pudo eliminar el usuario");}
+    return user;
   }
 }
 

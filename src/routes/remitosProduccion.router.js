@@ -58,14 +58,14 @@ async (req,res,next)=>{
 
 });
 router.delete('/subItem/:produccionId/:productoId',
-validatorHandler(getRemitoProduccion,'params'),
+validatorHandler(subItemSchema,'params'),
 async (req,res,next)=>{
   try{
   const {produccionId,productoId} = req.params;
-  const rmtEnP = await servicio.subItem(produccionId,productoId);
+  const rmtEnP = await servicio.subitem(produccionId,productoId);
   res.json(rmtEnP);
   }catch(error){next(error);}
 
 });
-
+ 
 module.exports = router;

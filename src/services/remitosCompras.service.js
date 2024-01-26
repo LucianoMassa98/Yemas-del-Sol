@@ -41,9 +41,11 @@ class RemitosCompraService{
     return rta;
     }
   async delete(id){
+    
     const rmtc = await this.findOne(id);
+    
     const rta=  await rmtc.destroy();
-    if(!rta){throw boom.notFound("No no se pudo actualizar la compra");}
+    if(!rta){throw boom.notFound("No no se pudo eliminar la compra");}
     return rmtc;
   }
   
@@ -52,7 +54,7 @@ class RemitosCompraService{
       {
         include: [
           {
-            association: 'customer'
+            association: 'galpon'
           },
           'items'
         ]

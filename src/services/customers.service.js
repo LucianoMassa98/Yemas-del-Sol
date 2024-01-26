@@ -4,9 +4,7 @@ const { models } = require('../libs/sequelize');
 class CustomerService {
 
   async find() {
-    const rta = await models.Customer.findAll({
-      include: ['user']
-    });
+    const rta = await models.Customer.findAll();
     if (!rta) {
       throw boom.notFound('customers not found');
     }

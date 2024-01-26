@@ -1,6 +1,8 @@
 const joi = require('joi');
 
 const galponId =joi.number().integer();
+const userId =joi.number().integer();
+
 const id = joi.number().integer();
 const cnt = joi.number().integer();
 const produccionId= joi.number().integer();
@@ -10,7 +12,7 @@ const fechaHasta= joi.date();
 
 const createRemitoProduccion = joi.object({
   galponId: galponId.required(),
-  produccionId: produccionId.required()
+  userId: userId.required()
 });
 const getRemitoProduccion = joi.object({
   id: id.required()

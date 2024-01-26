@@ -68,7 +68,7 @@ router.delete('/subItem/:compraId/:productoId',
 async(req,res,next)=>{
   try{
   const {compraId,productoId} = req.params;
-  const band = await servicio.subItem(compraId,productoId);
+  const band = await servicio.subitem(compraId,productoId);
   res.json(band);
 }catch(error){
   next(error);

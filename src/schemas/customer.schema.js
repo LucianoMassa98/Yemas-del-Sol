@@ -13,8 +13,8 @@ const getCustomerSchema = Joi.object({
 const createCustomerSchema = Joi.object({
   nombre: nombre.required(),
   apellido: apellido.required(),
-  celular: celular.required(),
-  email
+  celular,
+  email: email.required()
 });
 
 const updateCustomerSchema = Joi.object({

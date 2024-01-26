@@ -7,8 +7,13 @@ const {Op} = require('sequelize');
 class RemitosProduccionService{
 
    async create(data){
-    const newremito = await models.RemitoProduccion.create(data);
+  
+    try{
+      const newremito = await models.RemitoProduccion.create(data);
+    if(!newremito){throw boom.notFound("No se pudo crear el remito de produccion");}
     return newremito;
+    }catch(err){console.log("error: "+err); return false;}
+    
     }
     async additem(data){
       const newitem = await models.ProduccionProducto.create(data);
@@ -16,11 +21,11 @@ class RemitosProduccionService{
 
       return newitem;
     }
-    async subitem(compraId, productoId){
+    async subitem(produccionId, productoId){
 
-      const item = await models.CompraProducto.findOne(
-        {where:{compraId: compraId, productoId: productoId}});
-      if(!item){throw boom.notFound("No se pudo eliminar el producto de la produccion");}
+      const item = await models.ProduccionProducto.findOne(
+        {where:{produccionId: produccionId, productoId: productoId}});
+      if(!item){throw boom.notFound("No se pudo encontrar el producto");}
   
       const rta = await item.destroy();
       if(!rta){throw boom.notFound("No se pudo eliminar el producto de la produccion");}
