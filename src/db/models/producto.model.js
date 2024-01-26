@@ -29,7 +29,7 @@ const   PRODUCTO_TABLE = 'productos';
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    onDelete: 'CASCADE'
   }
 
 }
