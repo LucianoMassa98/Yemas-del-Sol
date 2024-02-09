@@ -47,6 +47,15 @@ validatorHandler(createProductoSchema,'body'),
   }catch(error){ next(error);}
 
   });
+  router.post('/generador',
+  async(req,res,next)=>{
+  try{
+    const newproduct = await servicio.generador();
+    res.json(newproduct);
+
+  }catch(error){ next(error);}
+
+  });
 
 router.patch('/:id',
 validatorHandler(updateProductoSchema,'body'),

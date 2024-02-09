@@ -10,6 +10,10 @@ const   PRODUCTO_TABLE = 'productos';
     primaryKey: true,
     type: DataTypes.INTEGER
   },
+  codigo: {
+    allowNull: true,
+    type: DataTypes.TEXT
+  },
   nombre: {
     allowNull: false,
     type: DataTypes.STRING,
@@ -18,6 +22,11 @@ const   PRODUCTO_TABLE = 'productos';
   cnt: {
     allowNull: false,
     type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  precio: {
+    allowNull: false,
+    type: DataTypes.DOUBLE,
     defaultValue: 0
   },
   categoryId: {

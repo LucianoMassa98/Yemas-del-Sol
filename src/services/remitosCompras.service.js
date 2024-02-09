@@ -6,9 +6,12 @@ class RemitosCompraService{
 
 
   async create(data){
+
     const compra = await models.RemitoCompra.create(data);
-    if(!compra){throw boom.notFound("No se pudo crear la compra");}
-    return compra;
+      console.log(compra);
+      if(!compra){throw boom.notFound("No se pudo crear la compra");}
+
+      return compra;
   }
   async additem(data){
     const newitem = await models.CompraProducto.create(data);
@@ -32,33 +35,36 @@ class RemitosCompraService{
 
     return rta;
   }
- 
+
   async update(id,changes){
-     const model = await this.findOne(id);
+     const model = await this.findOne(id,{items:true});
     const rta = await model.update(changes);
     if(!rta){throw boom.notFound("No no se pudo actualizar la compra");}
 
     return rta;
     }
   async delete(id){
-    
+
     const rmtc = await this.findOne(id);
-    
+
     const rta=  await rmtc.destroy();
     if(!rta){throw boom.notFound("No no se pudo eliminar la compra");}
     return rmtc;
   }
-  
-  async findOne(id){
-    const rmtc = await models.RemitoCompra.findByPk(id,
-      {
-        include: [
-          {
-            association: 'galpon'
-          },
-          'items'
-        ]
-      });
+
+  async findOne(id,query){
+    const options={include: []}
+
+    const {items , galpon} = query;
+
+    if(items){
+      options.include.push('items');
+    }
+    if(galpon){
+      options.include.push({ association: 'galpon'});
+    }
+
+    const rmtc = await models.RemitoCompra.findByPk(id, options);
 
     if(!rmtc){
       throw boom.notFound('Nota de pedido no encontrada');

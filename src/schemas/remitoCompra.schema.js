@@ -9,9 +9,11 @@ const fechaDesde= joi.date();
 const fechaHasta= joi.date();
 
 const createRemito = joi.object({
-  galponId: galponId.required(),
   userId: userId.required()
-  
+
+});
+const updateRemito = joi.object({
+  galponId: galponId.required(),
 });
 const getRemito = joi.object({
   id: id.required()
@@ -34,5 +36,5 @@ const queryRemitoSchema = joi.object({
   fechaDesde,
   fechaHasta
 });
-module.exports={createRemito,getRemito,
+module.exports={createRemito,getRemito,updateRemito,
   addItemSchema,subItemSchema,queryRemitoSchema};

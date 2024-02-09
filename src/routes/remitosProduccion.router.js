@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const RemitosProduccionService =require('../services/remitosProduccion.service');
 const validatorHandler = require('../middlewares/validator.handler');
-const {createRemitoProduccion,getRemitoProduccion,
+const {createRemitoProduccion,getRemitoProduccion,updateRemitoProduccion,
   addItemSchema,queryRemitoSchema,subItemSchema} = require('../schemas/remitoproduccion.schema');
 
 const servicio = new RemitosProduccionService();
@@ -22,7 +22,17 @@ validatorHandler(getRemitoProduccion,'params'),
 async(req,res,next)=>{
   try{
     const { id } = req.params;
-  const rmtEnP = await servicio.findOne(id);
+  const rmtEnP = await servicio.findOne(id,{items:true});
+  res.json(rmtEnP);
+  }catch(error){next(error);}
+});
+router.patch('/:id',
+validatorHandler(getRemitoProduccion,'params'),
+validatorHandler(updateRemitoProduccion,'body'),
+async(req,res,next)=>{
+  try{
+    const { id } = req.params;
+  const rmtEnP = await servicio.update(id,req.body);
   res.json(rmtEnP);
   }catch(error){next(error);}
 });
@@ -67,5 +77,5 @@ async (req,res,next)=>{
   }catch(error){next(error);}
 
 });
- 
+
 module.exports = router;

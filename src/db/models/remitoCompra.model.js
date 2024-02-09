@@ -19,7 +19,7 @@ const RemitoCompraSchema = {
   },
   galponId: {
     field: 'galpon_id',
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
       model: GALPON_TABLE,
@@ -45,7 +45,6 @@ const RemitoCompraSchema = {
 class RemitoCompra extends Model {
 
   static associate(models) {
-    this.belongsTo(models.Galpon, { as: 'galpon', });
     this.belongsTo(models.User, { as: 'user', });
     this.belongsToMany(models.producto, {
       as: 'items',

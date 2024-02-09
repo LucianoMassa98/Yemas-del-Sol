@@ -3,7 +3,7 @@ const router = express.Router();
 const RemitosCompraService =require('../services/remitosCompras.service');
 const validatorHandler = require('../middlewares/validator.handler');
 
-const {createRemito,getRemito,
+const {createRemito,getRemito,updateRemito,
   addItemSchema,subItemSchema,queryRemitoSchema} = require('../schemas/remitoCompra.schema');
 
 const servicio = new RemitosCompraService();
@@ -24,7 +24,17 @@ validatorHandler(getRemito,'params'),
 async(req,res,next)=>{
   try{
     const { id } = req.params;
-  const rmtC = await servicio.findOne(id);
+  const rmtC = await servicio.findOne(id,{items:true});
+  res.json(rmtC);
+  }catch(error){next(error);}
+});
+router.patch('/:id',
+validatorHandler(getRemito,'params'),
+validatorHandler(updateRemito,'body'),
+async(req,res,next)=>{
+  try{
+    const { id } = req.params;
+  const rmtC = await servicio.update(id,req.body);
   res.json(rmtC);
   }catch(error){next(error);}
 });
