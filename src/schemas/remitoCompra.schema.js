@@ -34,7 +34,10 @@ const subItemSchema = joi.object({
 const queryRemitoSchema = joi.object({
   galponId,
   fechaDesde,
-  fechaHasta
+  fechaHasta: fechaHasta.when('fechaDesde', {
+    is: joi.exist(),
+    then: joi.required()
+  })
 });
 module.exports={createRemito,getRemito,updateRemito,
   addItemSchema,subItemSchema,queryRemitoSchema};

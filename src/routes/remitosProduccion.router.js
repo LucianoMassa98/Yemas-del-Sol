@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const RemitosProduccionService =require('../services/remitosProduccion.service');
+const servicio = new RemitosProduccionService();
 const validatorHandler = require('../middlewares/validator.handler');
 const {createRemitoProduccion,getRemitoProduccion,updateRemitoProduccion,
   addItemSchema,queryRemitoSchema,subItemSchema} = require('../schemas/remitoproduccion.schema');
 
-const servicio = new RemitosProduccionService();
+
 
 router.get('/',
 validatorHandler(queryRemitoSchema,'query'),

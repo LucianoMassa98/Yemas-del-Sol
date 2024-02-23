@@ -68,7 +68,26 @@ class RemitosProduccionService{
 
   async find(query){
 
-    const remitos = await models.RemitoProduccion.findAll();
+    let options={where:{}, include:['items']};
+    const{fechaDesde, fechaHasta, galponId}= query;
+    if(fechaDesde && fechaHasta){
+      options.where={
+        createdAt:{
+          [Op.gte]: fechaDesde,
+          [Op.lte]: fechaHasta,
+        }
+      }
+    }
+
+    if(galponId){
+      options.where={
+       ...options.where,
+       galponId: galponId
+      }
+    }
+
+    const remitos = await models.RemitoProduccion.findAll(options);
+    if(!remitos){throw boom.notFound("Remitos Produccion not found");}
     return remitos;
   }
 
@@ -81,6 +100,55 @@ async SumarProducto(id, data){
   return rta;
 }
 
+async InformeProduccionDia(){
+  const hoy = new Date();
+  const año = hoy.getFullYear();
+  const mes = hoy.getMonth() + 1; // Se agrega 1 porque los meses se indexan desde 0 (enero es 0)
+  const dia = hoy.getDate();
+
+  const remitos = await this.find({fechaDesde:`${mes}-${dia}-${año}`, fechaHasta:`${mes}-${dia+1}-${año}`});
+
+
+
+  const consolidado = await this.consolidarProductos(remitos);
+
+
+  let informe = `
+    Informe de Producción:
+    -------------------------------
+    Fecha:  ${año}-${mes}-${dia}
+  `;
+  consolidado.forEach((item, index) => {
+    informe += `
+      ${index + 1}. Producto: ${item.nombre}
+         Cantidad: ${item.ProduccionProducto.cnt}
+    `;
+  });
+
+  return informe;
+}
+ async consolidarProductos(remitos){
+    let list=[];
+    remitos.forEach( remito => {
+
+      remito.items.forEach( async item => {
+
+          let i =0;
+          while(i<list.length && item.id!=list[i].id){i++};
+
+          if(i<list.length ){
+            list[i].ProduccionProducto.cnt += item.ProduccionProducto.cnt;
+          }else{
+            list.push(item);
+          }
+
+      });
+
+    });
+
+
+    return list;
+  }
 }
 
 module.exports = RemitosProduccionService;

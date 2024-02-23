@@ -30,7 +30,25 @@ class RemitosCompraService{
     return item;
   }
   async find(query){
-    const rta = await models.RemitoCompra.findAll();
+    let options={where:{}, include:['items']};
+    const{fechaDesde, fechaHasta, galponId}= query;
+    if(fechaDesde && fechaHasta){
+      options.where={
+        createdAt:{
+          [Op.gte]: fechaDesde,
+          [Op.lte]: fechaHasta,
+        }
+      }
+    }
+
+    if(galponId){
+      options.where={
+       ...options.where,
+       galponId: galponId
+      }
+    }
+
+    const rta = await models.RemitoCompra.findAll(options);
     if(!rta){throw boom.notFound("No hay remitos de compra");}
 
     return rta;
