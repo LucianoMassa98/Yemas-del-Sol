@@ -12,6 +12,9 @@ const config = {
   dbName:  process.env.DB_NAME,
   dbPort:  process.env.DB_PORT,
   dbUrl: process.env.DATABASE_URL,
+  emailEmisor: process.env.EMAIL,
+  password: process.env.PASSWORD_EMAIL,
+  emailReceptor: process.env.EMAIL_DESTINATARIO
 }
 
 module.exports = { config };
