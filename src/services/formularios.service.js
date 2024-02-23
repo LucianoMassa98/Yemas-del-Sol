@@ -3,13 +3,16 @@ const nodemailer = require('nodemailer');
 const { config } = require('../config/config');
 const RemitosProduccionService = require('./remitosProduccion.service');
 const servicio = new RemitosProduccionService();
+const RemitosCompraService = require('./remitosCompras.service');
+const servicio2 = new RemitosCompraService();
 
 class FormulariosService {
   async create() {
 
-    const informe = await servicio.InformeProduccionDia();
+    let informe = await servicio.InformeProduccionDia();
 
-    console.log(informe);
+    informe += await servicio2.InformeCompraDia();
+
     // Configurar el transporte
     let transporter = nodemailer.createTransport({
       service: 'gmail',

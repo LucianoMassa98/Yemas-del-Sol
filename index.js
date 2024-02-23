@@ -39,10 +39,9 @@ app.listen(port, ()=>{
 
 
 // Esta función se ejecutará todos los días a las 20:00, excepto los domingos
-const tareaDiaria = cron.schedule('0 14 * * 0-6', async () => {
+const tareaDiaria = cron.schedule('30 19 * * 0-6', async () => {
   const hoy = new Date();
   if (hoy.getDay() !== 0) { // Si no es domingo
-    console.log('Realizando operación diaria a las 20:00');
 
     await service.create();
   }
