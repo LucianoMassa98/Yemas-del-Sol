@@ -12,7 +12,7 @@ router.get('/',
 validatorHandler(queryRemitoSchema,'query'),
 async(req,res,next)=>{
   try{
-    const remitoscompras = await servicio.find();
+    const remitoscompras = await servicio.find(req.query);
   res.json(remitoscompras);
   }catch(error){next(error);}
 

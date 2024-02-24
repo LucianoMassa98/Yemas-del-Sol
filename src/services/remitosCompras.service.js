@@ -32,7 +32,7 @@ class RemitosCompraService{
   async find(query){
     let options={where:{}, include:['items']};
     const{fechaDesde, fechaHasta, galponId}= query;
-    if(fechaDesde && fechaHasta){
+    if(fechaDesde &&  fechaHasta){
       options.where={
         createdAt:{
           [Op.gte]: fechaDesde,
