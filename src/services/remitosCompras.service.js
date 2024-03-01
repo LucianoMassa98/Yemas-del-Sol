@@ -63,7 +63,7 @@ class RemitosCompraService{
     }
   async delete(id){
 
-    const rmtc = await this.findOne(id);
+    const rmtc = await this.findOne(id,{});
 
     const rta=  await rmtc.destroy();
     if(!rta){throw boom.notFound("No no se pudo eliminar la compra");}

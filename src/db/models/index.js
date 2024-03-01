@@ -12,9 +12,13 @@ const {CompraProducto, CompraProductoSchema}=require('./compra-producto.model');
 const{RemitoProduccion, RemitoProduccionSchema}=require('./remitoProduccion.model');
 const { ProduccionProducto, ProduccionProductoSchema}=require('./produccion-producto.model');
 
+const{Baja, bajaSchema}=require('./bajas.model');
+const { Desecho, desechoSchema}=require('./desecho.model');
+
+
 function setupModels(sequelize) {
 
-  
+
   User.init(UserSchema, User.config(sequelize));
   Customer.init(CustomerSchema,Customer.config(sequelize));
 
@@ -25,8 +29,10 @@ function setupModels(sequelize) {
   Galpon.init(GalponSchema,Galpon.config(sequelize));
   RemitoProduccion.init(RemitoProduccionSchema,RemitoProduccion.config(sequelize));
   ProduccionProducto.init(ProduccionProductoSchema,ProduccionProducto.config(sequelize));
+  Baja.init(bajaSchema,Baja.config(sequelize));
+  Desecho.init(desechoSchema,Desecho.config(sequelize));
 
- 
+
   User.associate(sequelize.models);
   Customer.associate(sequelize.models);
   Category.associate(sequelize.models);
@@ -35,6 +41,8 @@ function setupModels(sequelize) {
   Galpon.associate(sequelize.models);
   RemitoProduccion.associate(sequelize.models);
   ProduccionProducto.associate(sequelize.models);
+  Baja.associate(sequelize.models);
+  Desecho.associate(sequelize.models);
 }
 
 module.exports = setupModels;

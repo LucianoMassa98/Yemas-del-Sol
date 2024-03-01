@@ -38,7 +38,7 @@ class RemitosProduccionService{
     }
 
     async delete(id){
-    const model = await this.findOne(id);
+    const model = await this.findOne(id,{});
     const rta= await model.destroy();
     if(!rta){throw boom.notFound("No se pudo eliminar el la produccion");}
     return model;

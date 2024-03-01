@@ -6,6 +6,9 @@ const remitosProduccion = require('./remitosProduccion.router');
 const usuariosRouter = require('./users.router');
 const customerRouter = require('./customer.router');
 const galponRouter = require('./galpon.router');
+const informeRouter = require('./informes.router');
+const desechoRouter = require('./desechos.router');
+const bajaRouter = require('./bajas.router');
 
 function routerApi(app) {
   const router = express.Router();
@@ -17,6 +20,9 @@ function routerApi(app) {
   router.use('/usuarios',usuariosRouter);
   router.use('/customers',customerRouter);
   router.use('/galpones',galponRouter);
+  router.use('/informes',informeRouter);
+  router.use('/bajas',bajaRouter);
+  router.use('/desechos',desechoRouter);
 }
 
 module.exports = routerApi;
