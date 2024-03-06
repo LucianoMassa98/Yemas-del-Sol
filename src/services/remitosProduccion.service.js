@@ -110,7 +110,7 @@ async InformeProduccionDia(){
 
 
 
-  const consolidado = await this.consolidarProductos(remitos);
+  const consolidado = await this.consolidar(remitos);
 
 
   let informe = `
@@ -127,7 +127,15 @@ async InformeProduccionDia(){
 
   return informe;
 }
- async consolidarProductos(remitos){
+async Informe(query){
+
+  const remitos = await this.find(query);
+
+  const consolidado = await this.consolidar(remitos);
+
+  return consolidado;
+}
+ async consolidar(remitos){
     let list=[];
     remitos.forEach( remito => {
 

@@ -2,15 +2,17 @@ const express = require('express');
 
 const FormulariosService = require('./../services/formularios.service');
 const validatorHandler = require('./../middlewares/validator.handler');
-//const { loginUserSchema, updateUserSchema, createUserSchema, getUserSchema } = require('../schemas/user.schema');
+const { getInformeSchema } = require('../schemas/Informe.schema');
 
 const router = express.Router();
 const service = new FormulariosService();
 
-router.get('/administracion', async (req, res, next) => {
+router.get('/',
+validatorHandler(getInformeSchema,'query'),
+async (req, res, next) => {
   try {
-    //const users = await service.find();
-    res.json({});
+    const informe = await service.find(req.query);
+    res.json(informe);
   } catch (error) {
     next(error);
   }

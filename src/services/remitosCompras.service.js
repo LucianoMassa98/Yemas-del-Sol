@@ -30,6 +30,7 @@ class RemitosCompraService{
     return item;
   }
   async find(query){
+
     let options={where:{}, include:['items']};
     const{fechaDesde, fechaHasta, galponId}= query;
     if(fechaDesde &&  fechaHasta){
@@ -112,7 +113,7 @@ async InformeCompraDia(){
 
 
 
-  const consolidado = await this.consolidarProductos(remitos);
+  const consolidado = await this.consolidar(remitos);
 
 
   let informe = `
@@ -129,7 +130,16 @@ async InformeCompraDia(){
 
   return informe;
 }
- async consolidarProductos(remitos){
+async Informe(query){
+
+  const remitos = await this.find(query);
+
+  const consolidado = await this.consolidar(remitos);
+
+  return consolidado;
+}
+
+ async consolidar(remitos){
     let list=[];
     remitos.forEach( remito => {
 

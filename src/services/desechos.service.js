@@ -1,12 +1,22 @@
 const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
+const {Op} = require('sequelize');
 
 class DesechosService {
 
-  async find() {
+  async find(query) {
+    let options={where:{}};
+    const{fechaDesde, fechaHasta}= query;
+    if(fechaDesde &&  fechaHasta){
+      options.where={
+        createdAt:{
+          [Op.gte]: fechaDesde,
+          [Op.lte]: fechaHasta,
+        }
+      }
+    }
 
-
-    const rta = await models.Desecho.findAll();
+    const rta = await models.Desecho.findAll(options);
     return rta;
   }
 
@@ -45,7 +55,38 @@ class DesechosService {
     return model;
   }
 
+  async InformeMensaje(){
+    const hoy = new Date();
+    const año = hoy.getFullYear();
+    const mes = hoy.getMonth() + 1; // Se agrega 1 porque los meses se indexan desde 0 (enero es 0)
+    const dia = hoy.getDate();
 
+    const remitos = await this.find({fechaDesde:`${mes}-${dia}-${año}`, fechaHasta:`${mes}-${dia+1}-${año}`});
+    const consolidado = await this.consolidar(remitos);
+
+
+    let informe = `
+      Informe de desechos:
+      -------------------------------
+      Fecha:  ${año}-${mes}-${dia}
+      Cantidad: ${consolidado}
+    `;
+
+    return informe;
+  }
+  async Informe(query){
+
+    const remitos = await this.find({fechaDesde:query.fechaDesde, fechaHasta:query.fechaDesde});
+    const consolidado = await this.consolidar(remitos);
+    return consolidado;
+  }
+  async consolidar(desechos){
+      let sum=0;
+      desechos.forEach( desecho => {
+          sum +=desecho.cnt;
+      });
+      return sum;
+  }
 
 }
 
