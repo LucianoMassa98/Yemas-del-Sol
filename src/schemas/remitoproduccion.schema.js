@@ -9,12 +9,13 @@ const produccionId= joi.number().integer();
 const productoId= joi.number().integer();
 const fechaDesde= joi.date();
 const fechaHasta= joi.date();
-
+const createdAt= joi.date();
 const createRemitoProduccion = joi.object({
   userId: userId.required()
 });
 const updateRemitoProduccion = joi.object({
-  galponId: galponId.required()
+  galponId: galponId.required(),
+  createdAt
 });
 const getRemitoProduccion = joi.object({
   id: id.required()
