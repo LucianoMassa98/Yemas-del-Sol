@@ -48,6 +48,14 @@ class UserService {
     if(!rta){throw boom.notFound("No se pudo eliminar el usuario");}
     return user;
   }
+
+  async login(userName, password){
+
+    const usuario = await models.User.findOne({where:{userName:userName}});
+
+    if(!usuario || usuario.password!=password){throw boom.notFound("username or password incorrect!!");}
+  return usuario;
+  }
 }
 
 module.exports = UserService;
