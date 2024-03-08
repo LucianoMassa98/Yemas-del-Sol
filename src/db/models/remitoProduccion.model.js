@@ -45,6 +45,7 @@ const RemitoProduccionSchema = {
 class RemitoProduccion extends Model {
   static associate(models) {
     this.belongsTo(models.User, { as: 'user', });
+    this.belongsTo(models.Galpon, { as: 'galpon', });
 
     this.belongsToMany(models.producto, {
       as: 'items',

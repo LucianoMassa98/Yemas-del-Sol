@@ -14,11 +14,6 @@ class UserService {
   }
 
   async find() {
-
-    /*const client = await getconexion();
-    const rta = await client.query('SELECT * FROM tasks');
-    return rta.rows;*/
-
     const rta = await models.User.findAll({
       include: 'customer'
     });
@@ -51,10 +46,14 @@ class UserService {
 
   async login(userName, password){
 
-    const usuario = await models.User.findOne({where:{userName:userName}});
+    const usuario = await models.User.findOne({where:{userName:userName}, include:['customer']});
 
     if(!usuario || usuario.password!=password){throw boom.notFound("username or password incorrect!!");}
-  return usuario;
+
+    return {
+      userName: usuario.userName,
+      customer: usuario.customer
+    };
   }
 }
 

@@ -18,6 +18,16 @@ async (req, res, next) => {
   }
 });
 
+router.get('/detalles',
+validatorHandler(getInformeSchema,'query'),
+async (req, res, next) => {
+  try {
+    const informe = await service.findDetalle(req.query);
+    res.json(informe);
+  } catch (error) {
+    next(error);
+  }
+});
 
 
 module.exports = router;

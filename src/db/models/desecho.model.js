@@ -49,6 +49,7 @@ const desechoSchema = {
 class Desecho extends Model {
   static associate(models) {
     this.belongsTo(models.User, { as: 'user', });
+    this.belongsTo(models.Galpon, { as: 'galpon', });
 
   }
 

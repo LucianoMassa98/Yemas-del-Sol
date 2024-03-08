@@ -52,5 +52,19 @@ class FormulariosService {
       bajas: await servicio4.Informe(query)
     };
   }
+  async findDetalle(query){
+
+    const newQuery = {
+      ...query,
+      DetalleUser: true,
+      DetalleGalpon: true
+    }
+    return {
+      ingresos: await servicio2.find(newQuery),
+      egresos: await servicio.find(newQuery),
+      desechos: await servicio3.find(newQuery),
+      bajas: await servicio4.find(newQuery)
+    };
+  }
 }
 module.exports = FormulariosService;

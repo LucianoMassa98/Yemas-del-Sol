@@ -5,8 +5,8 @@ const {Op} = require('sequelize');
 class BajasService {
 
   async find(query) {
-    let options={where:{}};
-    const{fechaDesde, fechaHasta}= query;
+    let options={where:{}, include:[]};
+    const{fechaDesde, fechaHasta, galponId, DetalleUser, DetalleGalpon}= query;
     if(fechaDesde &&  fechaHasta){
       options.where={
         createdAt:{
@@ -15,6 +15,26 @@ class BajasService {
         }
       }
     }
+    if(galponId){
+      options.where={
+       ...options.where,
+       galponId: galponId
+      }
+    }
+    if(DetalleUser){
+      options.include.push({
+        model: models.User,
+        as: 'user',
+        include: ['customer']
+      });
+    }
+    if(DetalleGalpon){
+      options.include.push({
+        model: models.Galpon,
+        as: 'galpon'
+      });
+    }
+
     const rta = await models.Baja.findAll(options);
     if(!rta){ throw boom.notFound("Bajas not found");}
     return rta;

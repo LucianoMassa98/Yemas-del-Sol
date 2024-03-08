@@ -69,7 +69,9 @@ class RemitosProduccionService{
   async find(query){
 
     let options={where:{}, include:['items']};
-    const{fechaDesde, fechaHasta, galponId}= query;
+
+    const{fechaDesde, fechaHasta, galponId, DetalleUser, DetalleGalpon}= query;
+
     if(fechaDesde && fechaHasta){
       options.where={
         createdAt:{
@@ -84,6 +86,20 @@ class RemitosProduccionService{
        ...options.where,
        galponId: galponId
       }
+
+    }
+    if(DetalleUser){
+      options.include.push({
+        model: models.User,
+        as: 'user',
+        include: ['customer']
+      });
+    }
+    if(DetalleGalpon){
+      options.include.push({
+        model: models.Galpon,
+        as: 'galpon'
+      });
     }
 
     const remitos = await models.RemitoProduccion.findAll(options);

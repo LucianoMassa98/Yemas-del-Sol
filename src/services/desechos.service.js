@@ -5,8 +5,8 @@ const {Op} = require('sequelize');
 class DesechosService {
 
   async find(query) {
-    let options={where:{}};
-    const{fechaDesde, fechaHasta}= query;
+    let options={where:{}, include:[]};
+    const{fechaDesde, fechaHasta, galponId, DetalleUser, DetalleGalpon}= query;
     if(fechaDesde &&  fechaHasta){
       options.where={
         createdAt:{
@@ -14,6 +14,25 @@ class DesechosService {
           [Op.lte]: fechaHasta,
         }
       }
+    }
+    if(galponId){
+      options.where={
+       ...options.where,
+       galponId: galponId
+      }
+    }
+    if(DetalleUser){
+      options.include.push({
+        model: models.User,
+        as: 'user',
+        include: ['customer']
+      });
+    }
+    if(DetalleGalpon){
+      options.include.push({
+        model: models.Galpon,
+        as: 'galpon'
+      });
     }
 
     const rta = await models.Desecho.findAll(options);

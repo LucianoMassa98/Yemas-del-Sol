@@ -46,7 +46,9 @@ class RemitoCompra extends Model {
 
   static associate(models) {
     this.belongsTo(models.User, { as: 'user', });
-    this.belongsToMany(models.producto, {
+    this.belongsTo(models.Galpon, { as: 'galpon', });
+
+        this.belongsToMany(models.producto, {
       as: 'items',
       through: models.CompraProducto,
       foreignKey: 'compraId',
