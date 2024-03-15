@@ -51,6 +51,7 @@ class UserService {
     if(!usuario || usuario.password!=password){throw boom.notFound("username or password incorrect!!");}
 
     return {
+      roleId: usuario.roleId,
       userName: usuario.userName,
       customer: usuario.customer
     };

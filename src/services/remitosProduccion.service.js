@@ -68,7 +68,7 @@ class RemitosProduccionService{
 
   async find(query){
 
-    let options={where:{}, include:['items']};
+    let options={where:{}, include:['items'], attributes: ['id','createdAt']};
 
     const{fechaDesde, fechaHasta, galponId, DetalleUser, DetalleGalpon}= query;
 
@@ -92,12 +92,14 @@ class RemitosProduccionService{
       options.include.push({
         model: models.User,
         as: 'user',
+        attributes: ['id'],
         include: ['customer']
       });
     }
     if(DetalleGalpon){
       options.include.push({
         model: models.Galpon,
+        attributes: ['id','nombre'],
         as: 'galpon'
       });
     }

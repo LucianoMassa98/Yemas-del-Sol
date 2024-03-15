@@ -51,6 +51,7 @@ class RemitosCompraService{
     if(DetalleUser){
       options.include.push({
         model: models.User,
+        attributes: [],
         as: 'user',
         include: ['customer']
       });
