@@ -46,7 +46,9 @@ class UserService {
 
   async login(userName, password){
 
+
     const usuario = await models.User.findOne({where:{userName:userName}, include:['customer']});
+
 
     if(!usuario || usuario.password!=password){throw boom.notFound("username or password incorrect!!");}
 

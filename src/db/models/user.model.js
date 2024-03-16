@@ -1,5 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const {CUSTOMER_TABLE} = require('../models/customer.model');
+const {ROLE_TABLE} = require('../models/role.model');
 
 const USER_TABLE = 'users';
 
@@ -17,6 +18,18 @@ const UserSchema = {
     unique: true,
     references: {
       model: CUSTOMER_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE'
+
+  },
+  roleId:{
+
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    references: {
+      model: ROLE_TABLE,
       key: 'id'
     },
     onUpdate: 'CASCADE',
@@ -43,6 +56,7 @@ const UserSchema = {
 class User extends Model {
   static associate(models) {
     this.belongsTo(models.Customer, {as: 'customer'});
+    //this.belongsTo(models.Role, {as: 'role'});
 
 
   }

@@ -15,6 +15,7 @@ const { ProduccionProducto, ProduccionProductoSchema}=require('./produccion-prod
 const{Baja, bajaSchema}=require('./bajas.model');
 const { Desecho, desechoSchema}=require('./desecho.model');
 
+const { Role, RoleSchema}=require('./role.model');
 
 function setupModels(sequelize) {
 
@@ -31,6 +32,7 @@ function setupModels(sequelize) {
   ProduccionProducto.init(ProduccionProductoSchema,ProduccionProducto.config(sequelize));
   Baja.init(bajaSchema,Baja.config(sequelize));
   Desecho.init(desechoSchema,Desecho.config(sequelize));
+  Role.init(RoleSchema,Role.config(sequelize));
 
 
   User.associate(sequelize.models);
@@ -43,6 +45,8 @@ function setupModels(sequelize) {
   ProduccionProducto.associate(sequelize.models);
   Baja.associate(sequelize.models);
   Desecho.associate(sequelize.models);
+  Role.associate(sequelize.models);
+
 }
 
 module.exports = setupModels;
